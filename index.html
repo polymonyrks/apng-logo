@@ -1,6 +1,23 @@
 <!doctype html>
-<html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>APNG Preview</title>
+    <style>
+      html,body { margin:0; padding:0; }
+      body { min-height:100dvh; display:grid; place-items:center; background:#fff; }
+      img { max-width:min(90vw, 640px); height:auto; image-rendering:auto; }
+      figcaption { font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:#444; margin-top:8px; text-align:center; }
+    </style>
+  </head>
   <body>
-    <img src="gengenlogougo.png" alt="APNG Logo" />
+    <main>
+      <!-- ファイル名は正確に・大文字小文字区別されます -->
+      <figure>
+        <img src="gengenlogougo.png" alt="APNG Logo" />
+        <figcaption>APNGプレビュー（この場でアニメーション再生されます）</figcaption>
+      </figure>
+    </main>
   </body>
 </html>
