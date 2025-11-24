@@ -1,23 +1,223 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>APNG Preview</title>
-    <style>
-      html,body { margin:0; padding:0; }
-      body { min-height:100dvh; display:grid; place-items:center; background:#fff; }
-      img { max-width:min(90vw, 640px); height:auto; image-rendering:auto; }
-      figcaption { font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:#444; margin-top:8px; text-align:center; }
-    </style>
-  </head>
-  <body>
-    <main>
-      <!-- ファイル名は正確に・大文字小文字区別されます -->
-      <figure>
-        <img src="gengenlogougorec.png" alt="APNG Logo" />
-        <figcaption>APNGプレビュー（この場でアニメーション再生されます）</figcaption>
-      </figure>
-    </main>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <title>ゲーミングPCのAI活用 - オススメの構成</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ゲーミングPC（ローカルGPU）で生成AIを活用するためのオススメ構成・ツール群をまとめたページです。">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.7;
+      margin: 0;
+      padding: 0;
+      background-color: #f7f7f7;
+      color: #222;
+    }
+    header, main, footer {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+    header {
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+    h1 {
+      font-size: 1.6rem;
+      margin: 0 0 0.5rem;
+    }
+    .event-link {
+      font-size: 0.9rem;
+    }
+    .event-link a {
+      text-decoration: none;
+    }
+    main {
+      background-color: #fff;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+    section {
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid #eee;
+    }
+    section:last-of-type {
+      border-bottom: none;
+    }
+    h2 {
+      font-size: 1.3rem;
+      margin-top: 0;
+    }
+    h3 {
+      font-size: 1.1rem;
+      margin-top: 0.8rem;
+      margin-bottom: 0.3rem;
+    }
+    p {
+      margin-top: 0.3rem;
+      margin-bottom: 0.6rem;
+    }
+    ul {
+      margin: 0.3rem 0 0.6rem 1.2rem;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 0.2rem;
+    }
+    .note {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+    footer {
+      font-size: 0.8rem;
+      color: #777;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>5. オススメの構成</h1>
+  <p class="event-link">
+    イベントページに戻る：
+    <a href="index.html">ゲーミングPCのAI活用_s6 ローカルGPU × 生成AI</a>
+  </p>
+  <p class="note">
+    これまでに会で挙がった「良さげなツール群」のまとめです。<br>
+    ※ 参加にあたって必須というわけではなく、「あると便利」レベルの情報です。
+  </p>
+</header>
+
+<main>
+
+  <section id="remote-desktop">
+    <h2>1. リモートデスクトップ</h2>
+    <p>
+      HuggingFace や CivitAI からモデルをダウンロードする際に、
+      リモートデスクトップ環境があると非常に便利です。
+      ターミナルだけでも作業は可能ですが、快適に進めようとすると工夫が必要になります。
+    </p>
+    <p>
+      また、後述する <strong>LM Studio</strong> を利用する場合は、リモートデスクトップは
+      ほぼ必須と考えて良いです。GUIベースでモデル管理・設定を行うためです。
+    </p>
+  </section>
+
+  <section id="tailscale">
+    <h2>2. Tailscale</h2>
+    <p>
+      <strong>Tailscale</strong> を使うと、WebUI や ComfyUI、Ollama、SSH 接続などを
+      簡単・安定・高速に扱えるようになります。
+    </p>
+    <ul>
+      <li>設定が簡単（ポート開放などの煩雑な作業が不要）</li>
+      <li>時間経過・スリープ・一時的な通信切断があっても接続が切れにくい</li>
+      <li>TCP ではなく UDP ベースのため高速</li>
+    </ul>
+    <p>
+      例えば、自宅のメインマシン（母艦）に Tailscale 経由で接続し、
+      外出先から GPU タスクを回すような運用もできます。
+      自宅でも外でも、好きな場所で生成タスクを投げられるのが大きなメリットです。
+    </p>
+    <p>
+      Fooocus のような WebUI 系ツールであれば、スマホのブラウザからでも快適に利用でき、
+      「ちょっと遊ぶ」用途でも重宝します。
+    </p>
+  </section>
+
+  <section id="comfyui">
+    <h2>3. ComfyUI</h2>
+    <p>
+      <strong>ComfyUI</strong> を使うと、最新の画像・動画生成モデルや
+      そのワークフローをノードベースで柔軟に試すことができます。
+      生成の流れを「視覚的に」観察したり、部分的に差し替えてアレンジしたりといったことが容易です。
+    </p>
+    <p>応用例：</p>
+    <ul>
+      <li>人物だけを YOLO 的に検出してオブジェクトとして扱い、削除して Inpaint</li>
+      <li>ChatGPT と連携して英語プロンプトへの変換や、“気の利いた”プロンプト自動生成を行う</li>
+      <li>
+        高度な自動化ワークフロー：
+        画像生成（Flux 1.） →
+        動画用プロンプト・台詞生成（ChatGPT） →
+        ボイス生成（Voicepeak） →
+        動画生成（FramePack） →
+        口パク調整（Wan2.2-S2V）…といった流れを一気通貫で構築
+      </li>
+    </ul>
+    <p>
+      「とりあえず色々つないでみたい」「自分専用のパイプラインを作りたい」という人には、
+      かなり相性の良いツールです。
+    </p>
+  </section>
+
+  <section id="lmstudio-ollama-cline">
+    <h2>4. LM Studio / Ollama + VSCode &amp; Cline</h2>
+    <p>
+      ComfyUI が拡散型の画像・動画生成に強いのに対し、
+      言語モデル（ChatGPT のような LLM）をローカルで動かすには
+      <strong>LM Studio</strong> や <strong>Ollama</strong> が便利です。
+    </p>
+    <h3>LM Studio</h3>
+    <p>
+      GUI ベースでローカルモデルを導入でき、VSCode の拡張ストアのような感覚で
+      さまざまなモデルを試せます。モデルの管理・切り替えが視覚的で分かりやすいのが特徴です。
+    </p>
+    <h3>Ollama</h3>
+    <p>
+      ターミナルとの相性が良く、スクリプトや CLI ベースのワークフローに組み込みやすいです。
+      Docker 的な感覚でモデルを pull / run して使うことができます。
+    </p>
+    <h3>VSCode + Cline</h3>
+    <p>
+      VSCode の拡張機能 <strong>Cline</strong> を組み合わせると、
+      エージェント的なコード支援や自動化を手軽に試せます。
+      商用API・ローカルモデルを切り替えながら同じワークスペースで動かせるため、
+      「ローカルだけでどこまでやれるか」を検証したい人にも向いています。
+    </p>
+    <p>
+      ローカルモデルで Cline を活用する場合は、LM Studio もしくは Ollama のどちらかを
+      併用する構成が基本になります（他の選択肢もありますが、この辺りがメジャーどころです）。
+    </p>
+  </section>
+
+  <section id="jupyter">
+    <h2>5. Jupyter Notebook</h2>
+    <p>
+      Google Colab が有名ですが、そのローカル版に近い感覚で使えるのが
+      <strong>Jupyter Notebook</strong> です（歴史的には Jupyter の方が先行しています）。
+    </p>
+    <p>
+      例えば、最新モデルに対してまだ ComfyUI 用のワークフローが整備されておらず、
+      Diffusers 実装だけが公開されているような状況では、
+      Jupyter Notebook 上で直接 Python を書いて実験するのが手っ取り早いです。
+    </p>
+    <p>
+      ちょっとした Python の検証や、モデルの入出力の確認用としても相性が良く、
+      「まずは Notebook 上で動かしてから、本格的なパイプラインに組み込む」
+      といったプロトタイピングにも向いています。
+    </p>
+    <p>
+      Google Colab を使うのももちろん有効ですが、
+      ローカルGPUを活かす前提であれば、手元環境の Jupyter Notebook を
+      一つ用意しておくと何かと便利です。
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  &copy; 2025 ゲーミングPCのAI活用 勉強会
+</footer>
+
+</body>
 </html>
